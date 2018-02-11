@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var xhub = require('express-x-hub');
+var mongo = requre('mongodb');
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
@@ -25,7 +26,7 @@ app.get('/', function(req, res) {
   res.send('<pre>' + JSON.stringify(received_updates, null, 2) + '</pre>');
 });
 
-app.get(['/facebook', '/instagram'], function(req, res) {   
+app.get(['/facebook', '/instagram'], function(req, res) {
   if (
     req.param('hub.mode') == 'subscribe' &&
     req.param('hub.verify_token') == token
@@ -47,7 +48,12 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
-  received_updates.unshift(req.body);
+  //received_updates.unshift(req.body);
+  mongo.MongoClient.connect(process.env.MONGODB_URI, function(err, client) {
+      var db = client.db('webhooks');
+      var webhooks = db.collection('webhooks');
+      webhooks.insert(req.body);
+  });
   res.sendStatus(200);
 });
 
