@@ -42,7 +42,7 @@ app.post('/facebook', function(req, res) {
 
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
-  received_updates.unshift(req.body);
+  //received_updates.unshift(req.body);
   mongo.MongoClient.connect(process.env.MONGODB_URI, function(err, client) {
       var db = client.db('webhooks');
       var webhooks = db.collection('webhooks');
