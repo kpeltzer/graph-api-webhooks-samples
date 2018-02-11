@@ -44,6 +44,11 @@ app.post('/facebook', function(req, res) {
   // Process the Facebook updates here
   //received_updates.unshift(req.body);
   mongo.MongoClient.connect(process.env.MONGODB_URI, function(err, client) {
+
+      if (err) {
+          console.log(err);
+      }
+      
       var db = client.db('webhooks');
       var webhooks = db.collection('webhooks');
       webhooks.insert(req.body);
