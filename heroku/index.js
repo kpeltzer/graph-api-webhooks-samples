@@ -48,8 +48,8 @@ app.post('/facebook', function(req, res) {
       if (err) {
           console.log(err);
       }
-      
-      var db = client.db('webhooks');
+
+      var db = client.db('heroku_4gg8606f');
       var webhooks = db.collection('webhooks');
       webhooks.insert(req.body);
   });
