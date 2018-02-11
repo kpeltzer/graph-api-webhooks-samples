@@ -51,9 +51,12 @@ app.post('/facebook', function(req, res) {
 
       var db = client.db('heroku_4gg8606f');
       var webhooks = db.collection('webhooks');
-      webhooks.insert(req.body);
+      webhooks.insert(req.body, function() {
+        res.sendStatus(200);
+        client.close();
+      });
   });
-  res.sendStatus(200);
+  
 });
 
 app.post('/instagram', function(req, res) {
